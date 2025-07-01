@@ -76,7 +76,7 @@ def add():
             app_name=request.form['app_name'],
             app_username=request.form['username'],
             email_used=request.form['email'],
-            password_used=generate_password_hash(request.form['password'])  # Hashing
+            password_used=request.form['password']
         )
         db.session.add(new_user)
         db.session.commit()
@@ -91,9 +91,7 @@ def edit(id):
         user.app_name = request.form['app_name']
         user.app_username = request.form['username']
         user.email_used = request.form['email']
-        new_pass = request.form['password']
-        if not check_password_hash(user.password_used, new_pass):
-            user.password_used = generate_password_hash(new_pass)
+        user.password_used = request.form['password']
         db.session.commit()
         return redirect('/')
     return render_template('edit.html', user=user)
